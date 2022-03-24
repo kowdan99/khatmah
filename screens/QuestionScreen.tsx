@@ -1,39 +1,49 @@
-import React, { useEffect, useState } from 'react'
-import {StyleSheet, Text, TextInput, View } from 'react-native';
-import DropDownPicker from 'react-native-dropdown-picker';
-
+import React, {useEffect, useState } from 'react'
+import {StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import DropDownPicker, { ItemType, ValueType } from 'react-native-dropdown-picker';
+import surahs_items from '../data2'
+import pages from '../data3'
 
 const QuestionScreen = () => {
-    const [surahs, updateSurahs] = useState<any>([]);
-    const [value, setValue] = useState<any>([]);
-    const [open, setOpen] = useState(false);
+    const [open,setOpen] = useState<boolean>(false);
+    const[item, setItems] = useState<any[]>(surahs_items);
+    const [value, setValue] = useState<ValueType | null>(null);
+    const [surah, setSurah] = useState<ItemType | null>();
 
-    useEffect(() => {
-        requestSurahs();
-    }, []);
-    
-    async function requestSurahs() {
-         const res = await fetch(`https://api.quran.com/api/v4/chapters?language=en`);
-    
-         const json = await res.json();
-         console.log(json);
-    
-         updateSurahs(json.name_simple);
-    }
+    const [open2,setOpen2] = useState<boolean>(false);
+    const[item2, setItems2] = useState<any[]>(pages);
+    const [value2, setValue2] = useState<ValueType | null>(null);
+    const [page, setPages]  = useState<ItemType | null>();
 
     return (
         <View style={styles.container}>
-            <Text style={{color: "#FFFFFF", marginTop: 30, marginLeft: 20}}>From which surah and page would you like to start? </Text>
-            <DropDownPicker min={0} open={open} setOpen={setOpen} value={value} setValue={setValue} items={surahs} setItems={surahs} multiple={true}/>
+            <View style={{marginTop: 30}}>
+                <Text style={{color: "#FFFFFF", marginTop: 0, marginLeft: 20, fontWeight: 'bold'}}>From which surah would you like to start? </Text>
+                <DropDownPicker onSelectItem={(item) => {setSurah(item)}}placeholder="Pick a surah" open={open} setOpen={setOpen} value={value} setValue={setValue} items={item} setItems={setItems} multiple={false}/>
+            </View>
+            <View style={{marginTop: 150}}>
+                <Text style={{color: "#FFFFFF", marginLeft: 20, fontWeight: 'bold'}}>
+                    How many pages would you like to read?
+                </Text>
+                <DropDownPicker onSelectItem={(item) => {setPages(item)}}placeholder="Pick a number of pages to complete" open={open2} setOpen={setOpen2} value={value2} setValue={setValue2} items={item2} setItems={setItems2} multiple={false}/>
+            </View>
+            <View style={styles.buttonContainer}>
+                <TouchableOpacity style={styles.button}>
+                    <Text style={styles.buttonText}>Start counting ✨</Text>
+                </TouchableOpacity>  
+            </View>
         </View>
     )
+    
 }
 export default QuestionScreen
 
 const styles = StyleSheet.create({
     container: { 
+        display: 'flex',
         flex: 1,
         backgroundColor: '#6667AB',
+        flexDirection: 'column'
     }, 
     input: {
         backgroundColor: '#FFFFFF',
@@ -42,5 +52,26 @@ const styles = StyleSheet.create({
         borderRadius:10,
         marginTop:5,
     },
+    buttonContainer: {
+        width: '80%',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 200,
+        marginLeft: 30
+    },
+    button: {
+        backgroundColor: '#FFFFFF',
+        width: '100%',
+        padding: 15,
+        paddingHorizontal: 40,
+        borderRadius: 10,
+        // alignItems: 'center',
+    },
+    buttonText: {
+        color: "#6667AB",
+        fontWeight: '700',
+        fontSize: 16,
+        marginLeft: 50
+    }
 })
 

@@ -73,9 +73,11 @@ export default HomeScreen;
 const styles = StyleSheet.create({
     container: { 
       flex: 1,
+      display: 'flex',
       backgroundColor: '#6667AB',
       alignItems: 'center',
       justifyContent: 'center',
+      flexDirection: 'column'
     }, 
     input: {
         backgroundColor: 'white',
@@ -91,7 +93,7 @@ const styles = StyleSheet.create({
         width: '80%',
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 40
+        marginTop: 100
     },
     button: {
         backgroundColor: '#0782F9',

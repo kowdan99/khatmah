@@ -13,7 +13,7 @@ export default function App() {
       <Stack.Navigator>
         <Stack.Screen options={{headerShown:false}} name="Home" component={HomeScreen} />
         <Stack.Screen options={{
-          title: 'May Allah (swt) accept your deeds ✨',
+          title: 'May Allah swt accept your deeds ✨',
           headerStyle: {
             backgroundColor: '#E5E5E5',
           },
