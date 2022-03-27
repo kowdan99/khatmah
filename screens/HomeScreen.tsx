@@ -4,7 +4,7 @@ import auth from '../firebase';
 import {createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut} from "firebase/auth";
 import { useNavigation } from '@react-navigation/native';
 import QuestionScreen from './QuestionScreen';
-
+//import image from '../'
 const HomeScreen = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -79,6 +79,10 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
       flexDirection: 'column'
     }, 
+    logo: {
+        width: 66,
+        height: 58,
+    },
     input: {
         backgroundColor: 'white',
         paddingHorizontal: 70,
