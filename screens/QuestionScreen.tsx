@@ -5,6 +5,7 @@ import DropDownPicker, { ItemType, ValueType } from 'react-native-dropdown-picke
 import surahs_items from '../data2'
 import pages from '../data3'
 import LogScreen from './LogScreen';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const QuestionScreen = () => {
     //First picker data
@@ -67,6 +68,74 @@ const QuestionScreen = () => {
         })
     }
 
+    const [pagesRead, setPagesRead] = useState("");
+    const [previousStartPage, setPreviousaStartPage] = useState("");
+    const[lastSurah, setLastSurah] = useState("");
+    const[lastPage, setLastPage] = useState("");
+    useEffect(()=> {
+        const pagesRead = () => {
+            getData("Pages read")
+            .then((pagesRead) => {
+                if(pagesRead !== null) {
+                    setPagesRead(pagesRead);
+                }
+            })
+        }
+
+        const prevStartPage = () => {
+            getData("Start page")
+            .then((startPage) => {
+                if(startPage !== null) {
+                    setPreviousaStartPage(startPage);
+                }
+            })
+        }
+
+        pagesRead();
+        prevStartPage();
+    }, [])
+
+    useEffect(()=> {
+        getSurahBasedOnPage(pagesRead, previousStartPage);
+    }, [])
+
+    async function getSurahBasedOnPage(pages: string, startPage: string) {
+
+        if(pages !== "" && startPage !== "") {
+            const total_pages = parseInt(pages) + parseInt(startPage);
+            const res = await fetch(`https://api.quran.com/api/v4/chapters?language=en`);
+
+            const json = await res.json();
+            //console.log("SURAH HAS BEEN SELECTED");
+
+            setSurahs(json.chapters);
+            surahs.map((surah_api) => {
+                if(surah_api !== null) {
+                    const low = surah_api.pages[0];
+                    const high = surah_api.pages[1];
+
+                    if(low >= total_pages && total_pages <= high) {
+                        setLastSurah(surah_api.name_simple);
+                        setLastPage(total_pages + "");
+                    }
+                }
+            })
+        }
+    }
+
+    async function getData(key: string): Promise<string | null> {
+        try {
+          const value = await AsyncStorage.getItem(key)
+          if(value !== null) {
+            return value;
+          } else {
+              return null;
+          }
+        } catch(e) {
+            return "Error";
+        }
+    }
+
     const navigate = () => {
         navigation.navigate('Log', {currentSurah: surah, currentPage: page, currentStartPage: startPage});
     }
@@ -76,6 +145,7 @@ const QuestionScreen = () => {
             <View style={{marginTop: 30}}>
                 <Text style={{color: "#FFFFFF", marginTop: 0, marginLeft: 20, fontWeight: 'bold'}}>From which surah would you like to start? </Text>
                 <DropDownPicker onSelectItem={(item) => {setSurah(item)}}placeholder="Pick a surah" open={open} setOpen={setOpen} value={value} setValue={setValue} items={item} setItems={setItems} multiple={false}/>
+                {lastSurah === "" && lastPage === "" ? null : <Text> You stopped at surah: {lastSurah}, on page {lastPage}</Text>}
             </View>
             <View style={{marginTop: 80}}>
                 <Text style={{color: "#FFFFFF", marginLeft: 20, fontWeight: 'bold'}}>
