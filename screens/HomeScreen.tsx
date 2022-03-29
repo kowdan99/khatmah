@@ -4,11 +4,13 @@ import auth from '../firebase';
 import {createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut} from "firebase/auth";
 import { useNavigation } from '@react-navigation/native';
 import QuestionScreen from './QuestionScreen';
-//import image from '../'
+import { Image } from 'react-native';
+
 const HomeScreen = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
+    const logo = require('../images/khatmahPic.png');
 
     const navigation = useNavigation();
 
@@ -48,7 +50,7 @@ const HomeScreen = () => {
     }
     return (
         <View style={styles.container}>
-            <Text style={{ fontFamily: 'Inter_900Black', fontSize: 40, color: 'white'}}>Khatmah</Text>
+            <Image source={logo} style={styles.logo}/>
             <KeyboardAvoidingView behavior='padding' style={styles.container}>
                 <View style={styles.inputContainer}>
                     <TextInput placeholder='Email' value={email} onChangeText={text => setEmail(text)} style={styles.input}/>
@@ -80,8 +82,9 @@ const styles = StyleSheet.create({
       flexDirection: 'column'
     }, 
     logo: {
-        width: 66,
-        height: 58,
+        width: 200,
+        height: 200,
+        marginTop: 50
     },
     input: {
         backgroundColor: 'white',
