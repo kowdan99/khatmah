@@ -23,7 +23,16 @@ export default function App() {
             fontWeight: 'bold'
           },
         }} name="Questions" component={QuestionScreen} />
-        <Stack.Screen options={{headerShown:false}} name="Log" component={LogScreen} />
+        <Stack.Screen options={{
+          title: 'May Allah swt accept your deeds ✨',
+          headerStyle: {
+            backgroundColor: '#E5E5E5',
+          },
+          headerTintColor: '#6667AB',
+          headerTitleStyle: {
+            fontWeight: 'bold'
+          },
+        }} name="Log" component={LogScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -94,6 +94,7 @@ const styles = StyleSheet.create({
         marginTop:5,
     },
     inputContainer: {
+        marginTop: 25,
         width: '80%'
     },
     buttonContainer: {

@@ -5,6 +5,7 @@ import DropDownPicker, { ItemType, ValueType } from 'react-native-dropdown-picke
 import surahs_items from '../data2'
 import pages from '../data3'
 import LogScreen from './LogScreen';
+import { useIsFocused } from "@react-navigation/native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const QuestionScreen = () => {
@@ -68,59 +69,33 @@ const QuestionScreen = () => {
         })
     }
 
-    const [pagesRead, setPagesRead] = useState("");
-    const [previousStartPage, setPreviousaStartPage] = useState("");
+    const isFocused = useIsFocused();
     const[lastSurah, setLastSurah] = useState("");
     const[lastPage, setLastPage] = useState("");
     useEffect(()=> {
-        const pagesRead = () => {
-            getData("Pages read")
-            .then((pagesRead) => {
-                if(pagesRead !== null) {
-                    setPagesRead(pagesRead);
-                }
-            })
+        if(isFocused) {
+            pagesread();
+            prevStartPage();
+            //getSurahBasedOnPage(pagesRead, previousStartPage);
         }
+    }, [isFocused])
 
-        const prevStartPage = () => {
-            getData("Start page")
-            .then((startPage) => {
-                if(startPage !== null) {
-                    setPreviousaStartPage(startPage);
-                }
-            })
-        }
+    const pagesread = () => {
+        getData("Previous surah read")
+        .then((lastsurah) => {
+            if(lastsurah !== null) {
+                setLastSurah(lastsurah);
+            }
+        })
+    }
 
-        pagesRead();
-        prevStartPage();
-    }, [])
-
-    useEffect(()=> {
-        getSurahBasedOnPage(pagesRead, previousStartPage);
-    }, [])
-
-    async function getSurahBasedOnPage(pages: string, startPage: string) {
-
-        if(pages !== "" && startPage !== "") {
-            const total_pages = parseInt(pages) + parseInt(startPage);
-            const res = await fetch(`https://api.quran.com/api/v4/chapters?language=en`);
-
-            const json = await res.json();
-            //console.log("SURAH HAS BEEN SELECTED");
-
-            setSurahs(json.chapters);
-            surahs.map((surah_api) => {
-                if(surah_api !== null) {
-                    const low = surah_api.pages[0];
-                    const high = surah_api.pages[1];
-
-                    if(low >= total_pages && total_pages <= high) {
-                        setLastSurah(surah_api.name_simple);
-                        setLastPage(total_pages + "");
-                    }
-                }
-            })
-        }
+    const prevStartPage = () => {
+        getData("Previous end page")
+        .then((endpage) => {
+            if(endpage !== null) {
+                setLastPage(endpage);
+            }
+        })
     }
 
     async function getData(key: string): Promise<string | null> {
@@ -136,26 +111,44 @@ const QuestionScreen = () => {
         }
     }
 
+    async function setUserData(key: string, value: string) {
+        try {
+            console.log("setUserData is called");
+            await AsyncStorage.setItem(key, value)
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
     const navigate = () => {
+        if(surah?.label !== null && surah?.label !== undefined) {
+            const newSurah = surah.label?.toString();
+            setUserData("Previous surah read", newSurah);
+        }
+
+        if(startPage?.label !== null && startPage?.label !== undefined) {
+            const newStartP = startPage.label?.toString()
+            setUserData("Previous end page", newStartP);
+        }
         navigation.navigate('Log', {currentSurah: surah, currentPage: page, currentStartPage: startPage});
     }
     
     return (
         <View style={styles.container}>
             <View style={{marginTop: 30}}>
-                <Text style={{color: "#FFFFFF", marginTop: 0, marginLeft: 20, fontWeight: 'bold'}}>From which surah would you like to start? </Text>
+                <Text style={{color: "#FFFFFF", marginTop: 0, marginLeft: 20, fontWeight: 'bold'}}>What surah did you stop at?</Text>
                 <DropDownPicker onSelectItem={(item) => {setSurah(item)}}placeholder="Pick a surah" open={open} setOpen={setOpen} value={value} setValue={setValue} items={item} setItems={setItems} multiple={false}/>
-                {lastSurah === "" && lastPage === "" ? null : <Text> You stopped at surah: {lastSurah}, on page {lastPage}</Text>}
+                {lastSurah == "" && lastPage == "" ? null : <Text style={{color: "#FFFFFF", marginLeft: 20, fontWeight: 'normal', fontStyle:'italic'}}> You stopped last at surah: {lastSurah}, on page {lastPage}</Text>}
             </View>
-            <View style={{marginTop: 80}}>
+            {/* <View style={{marginTop: 80}}>
                 <Text style={{color: "#FFFFFF", marginLeft: 20, fontWeight: 'bold'}}>
                     How many pages would you like to read?
                 </Text>
                 <DropDownPicker onSelectItem={(item) => {setPages(item)}}placeholder="Pick a number of pages to complete" open={open2} setOpen={setOpen2} value={value2} setValue={setValue2} items={item2} setItems={setItems2} multiple={false}/>
-            </View>
-            <View style={{marginTop: 80}}>
+            </View> */}
+            <View style={{marginTop: 180}}>
                 <Text style={{color: "#FFFFFF", marginLeft: 20, fontWeight: 'bold'}}>
-                    What page are you starting from?
+                    What page did you stop at?
                 </Text>
                 <DropDownPicker onSelectItem={(item) => {setStartPage(item)}} placeholder="Pick a page number" open={open3} setOpen={setOpen3} value={value3} setValue={setValue3} items={item3} setItems={setItems3} multiple={false}/>
             </View>
@@ -188,7 +181,7 @@ const styles = StyleSheet.create({
         width: '80%',
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 150,
+        marginTop: 180,
         marginLeft: 30
     },
     button: {

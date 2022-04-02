@@ -13,62 +13,51 @@ const LogScreen = ({route, navigation} : Props): JSX.Element => {
 
     const [totalPages, setTotalPages] = useState("");
     const[newTotalPages, setNewTotalPages] = useState(0);
-    
-    // console.log(typeof currentSurah?.label);
-    // console.log(typeof currentPage?.label);
+    const [currentEndPage, setCurrentEndPage] = useState(0); 
+    //const [date, setDate] = useState(0);
+    const [diff, setDiff] = useState(0);
+    const[pagesReadToday, setPagesReadToday] = useState(0);
+
+
     useEffect(() => {
-        if(currentSurah != null) {
-            if(currentSurah.label !== undefined)
-            setUserData("Surah", currentSurah.label);
-            console.log("currentSurah is recorded in storage");
-            console.log("currentSurah type is", typeof currentSurah.label);
+
+        if(currentStartPage?.label !== undefined) {
+            setCurrentEndPage(parseInt(currentStartPage?.label));
         }
 
-        if(currentPage != null) {
-            if(currentPage.label !== undefined)
-            setUserData("Pages read", currentPage.label);
-            console.log("currentPage is recorded in storage");
-            console.log("currentPage type is", typeof currentPage.label);
-        } 
+        const date1 = new Date('05/02/2022');
+        const date2 = new Date();
 
-        if(currentStartPage != null) {
-            if(currentStartPage.label !== undefined)
-            setUserData("Start page", (currentStartPage.label + ""));
-            console.log(typeof currentStartPage.label + "");
-            console.log("currentStartPage is recorded in storage");
-            console.log("currentStartPage type is", typeof (currentStartPage.label + ""));
-        }  
+        const diff = Math.abs(date1.getTime() - date2.getTime());
+        const diffDays = Math.ceil(diff / (1000 * 3600 * 24)); 
 
-        const total = () => { 
-            getData("Total pages")
-            .then((previousTotal) => {
-                if(previousTotal === null) {
-                    console.log("Previous total is null");
-                    console.log(typeof currentPage?.label as string);
-                    setUserData("Total pages", currentPage?.label as string);
-                    if(currentPage?.label != undefined) {
-                        setNewTotalPages(parseInt(currentPage?.label as string));
-                    }
-                } else {
-                    console.log("Previous total is not null");
-                    console.log("Current page label is ", currentPage?.label);
-                    var newTotal;
-                    if(Number.isNaN(parseInt(currentPage?.label as string))) {
-                        newTotal = parseInt(previousTotal);
-                    } else {
-                        newTotal = parseInt(previousTotal) + parseInt(currentPage?.label as string);
-                    }
-                    console.log(previousTotal);
-                    console.log("yooooo", newTotal);
-                    setUserData("Total pages", (newTotal + ""));
-                    setNewTotalPages(newTotal);
-                }
-            }).catch((error) => alert(error.message))
-        }
+        //const date2s = JSON.stringify(date2.getDay);
+        var today = new Date();
+        var dd = String(today.getDate()).padStart(2, '0');
+        var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+        var yyyy = today.getFullYear();
+        const date2s = mm + '/' + dd + '/' + yyyy;
+        console.log("****DATE****", typeof date2s);
 
-        total();
+        pagesreadtoday(date2s);
+        setDiff(diffDays);
     }, [])
 
+    const pagesreadtoday = (date: string) => {
+        getData(date)
+        .then((todayPages) => {
+            if(currentStartPage?.label !== null && currentStartPage?.label !== undefined) {
+                if(todayPages === null) {
+                    const newEndPage = currentStartPage.label.toString();
+                    setUserData(date, newEndPage);
+                } else {
+                    const pageDiff = parseInt(currentStartPage.label) - parseInt(todayPages);
+                    setPagesReadToday(pageDiff);
+                }
+            }
+        })
+    }
+    
     async function setUserData(key: string, value: string) {
         try {
             console.log("setUserData is called");
@@ -96,13 +85,13 @@ const LogScreen = ({route, navigation} : Props): JSX.Element => {
     }
     return (
         <View style={styles.container}>
-            <View style={styles.buttonContainer}>
-                <TouchableOpacity onPress={navigate}style={styles.button}>
-                    <Text style={styles.buttonText}>Back</Text>
-                </TouchableOpacity>  
-            </View>
             <View style={{marginTop: 30, alignItems: 'center', justifyContent: 'center'}}>
-                <Text style={{color: "#FFFFFF", marginTop: 0, marginLeft: 20, fontWeight: 'bold'}}>TOTAL PAGES: {newTotalPages}</Text>
+                <Text style={{color: "#FFFFFF", marginTop: 0, marginLeft: 20, fontWeight: 'bold', fontSize: 50}}>{currentEndPage}</Text>
+                <Text style={{color: "#FFFFFF", marginTop: 0, marginLeft: 20, fontWeight: 'bold'}}> Total Pages Read</Text>
+                <Text style={{color: "#FFFFFF", marginTop: 70, marginLeft: 20, fontWeight: 'bold', fontSize: 50}}>{604 - currentEndPage}</Text>
+                <Text style={{color: "#FFFFFF", marginTop: 0, marginLeft: 20, fontWeight: 'bold'}}> Pages Left To Finish The Quran</Text>
+                <Text style={{color: "#FFFFFF", marginTop: 70, marginLeft: 20, fontWeight: 'bold'}}> You will need to finish {Math.floor((604 - currentEndPage)/diff)} pages a day to finish the Quran before Ramadan.</Text>
+                <Text style={{color: "#FFFFFF", marginTop: 70, marginLeft: 20, fontWeight: 'bold', fontSize:15}}> You have read {pagesReadToday} pages today!</Text>
             </View>
         </View>
     ) 
