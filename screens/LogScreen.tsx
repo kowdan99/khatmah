@@ -5,6 +5,8 @@ import { useEffect, useState } from 'react';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { AppRootParamList } from '../navTypes';
 type Props = NativeStackScreenProps<AppRootParamList, 'Log'>;
+import "@expo/match-media";
+import { useMediaQuery } from "react-responsive";
 
 //({surah, pagesRead, startPage} : AppProps): JSX.Element => 
 const LogScreen = ({route, navigation} : Props): JSX.Element => {
@@ -50,6 +52,8 @@ const LogScreen = ({route, navigation} : Props): JSX.Element => {
                 if(todayPages === null) {
                     const newEndPage = currentStartPage.label.toString();
                     setUserData(date, newEndPage);
+                    const newEndPageS = parseInt(newEndPage);
+                    setPagesReadToday(newEndPageS);
                 } else {
                     const pageDiff = parseInt(currentStartPage.label) - parseInt(todayPages);
                     setPagesReadToday(pageDiff);
@@ -83,18 +87,72 @@ const LogScreen = ({route, navigation} : Props): JSX.Element => {
     const navigate = () => {
         navigation.navigate('Questions');
     }
-    return (
-        <View style={styles.container}>
-            <View style={{marginTop: 30, alignItems: 'center', justifyContent: 'center'}}>
-                <Text style={{color: "#FFFFFF", marginTop: 0, marginLeft: 20, fontWeight: 'bold', fontSize: 50}}>{currentEndPage}</Text>
-                <Text style={{color: "#FFFFFF", marginTop: 0, marginLeft: 20, fontWeight: 'bold'}}> Total Pages Read</Text>
-                <Text style={{color: "#FFFFFF", marginTop: 70, marginLeft: 20, fontWeight: 'bold', fontSize: 50}}>{604 - currentEndPage}</Text>
-                <Text style={{color: "#FFFFFF", marginTop: 0, marginLeft: 20, fontWeight: 'bold'}}> Pages Left To Finish The Quran</Text>
-                <Text style={{color: "#FFFFFF", marginTop: 70, marginLeft: 20, fontWeight: 'bold'}}> You will need to finish {Math.floor((604 - currentEndPage)/diff)} pages a day to finish the Quran before Ramadan.</Text>
-                <Text style={{color: "#FFFFFF", marginTop: 70, marginLeft: 20, fontWeight: 'bold', fontSize:15}}> You have read {pagesReadToday} pages today!</Text>
+
+    const isDeviceWidth295_359 = useMediaQuery({
+        query: "(min-device-width:400) and (max-device-height:900)",
+    });
+
+    const isDeviceWidth400_950 = useMediaQuery({
+        query: "(min-device-width:400) and (max-device-height:950)",
+    });
+
+    const isDeviceWidth360_374 = useMediaQuery({
+        query: "(min-device-width:375) and (max-device-width:767)",
+    });
+
+    if(isDeviceWidth295_359) {
+        return (
+            <View style={styles.container}>
+                <View style={{marginTop: 30, alignItems: 'center', justifyContent: 'center'}}>
+                    <Text style={{color: "#FFFFFF", marginTop: 0, marginLeft: 20, fontWeight: 'bold', fontSize: 50}}>{currentEndPage}</Text>
+                    <Text style={{color: "#FFFFFF", marginTop: 0, marginLeft: 20, fontWeight: 'bold'}}> Total Pages Read</Text>
+                    <Text style={{color: "#FFFFFF", marginTop: 140, marginLeft: 20, fontWeight: 'bold', fontSize: 50}}>{604 - currentEndPage}</Text>
+                    <Text style={{color: "#FFFFFF", marginTop: 0, marginLeft: 20, fontWeight: 'bold'}}> Pages Left To Finish The Quran</Text>
+                    <Text style={{color: "#FFFFFF", marginTop: 140, marginLeft: 78, marginRight: 75,fontWeight: 'bold'}}> You will need to finish {Math.floor((604 - currentEndPage)/diff)} pages a day to finish the Quran before Ramadan.</Text>
+                    <Text style={{color: "#FFFFFF", marginTop: 140, marginLeft: 20, fontWeight: 'bold', fontSize:15}}> You have read {pagesReadToday} pages today!</Text>
+                </View>
             </View>
-        </View>
-    ) 
+        ) 
+    } else if(isDeviceWidth400_950) {
+        return (
+            <View style={styles.container}>
+                <View style={{marginTop: 30, alignItems: 'center', justifyContent: 'center'}}>
+                    <Text style={{color: "#FFFFFF", marginTop: 0, marginLeft: 20, fontWeight: 'bold', fontSize: 50}}>{currentEndPage}</Text>
+                    <Text style={{color: "#FFFFFF", marginTop: 0, marginLeft: 20, fontWeight: 'bold'}}> Total Pages Read</Text>
+                    <Text style={{color: "#FFFFFF", marginTop: 170, marginLeft: 20, fontWeight: 'bold', fontSize: 50}}>{604 - currentEndPage}</Text>
+                    <Text style={{color: "#FFFFFF", marginTop: 0, marginLeft: 20, fontWeight: 'bold'}}> Pages Left To Finish The Quran</Text>
+                    <Text style={{color: "#FFFFFF", marginTop: 170, marginLeft: 78, marginRight: 75,fontWeight: 'bold'}}> You will need to finish {Math.floor((604 - currentEndPage)/diff)} pages a day to finish the Quran before Ramadan.</Text>
+                    <Text style={{color: "#FFFFFF", marginTop: 170, marginLeft: 20, fontWeight: 'bold', fontSize:15}}> You have read {pagesReadToday} pages today!</Text>
+                </View>
+            </View>
+        ) 
+    } else if(isDeviceWidth360_374) {
+        return (
+            <View style={styles.container}>
+                <View style={{marginTop: 30, alignItems: 'center', justifyContent: 'center'}}>
+                    <Text style={{color: "#FFFFFF", marginTop: 0, marginLeft: 20, fontWeight: 'bold', fontSize: 50}}>{currentEndPage}</Text>
+                    <Text style={{color: "#FFFFFF", marginTop: 0, marginLeft: 20, fontWeight: 'bold'}}> Total Pages Read</Text>
+                    <Text style={{color: "#FFFFFF", marginTop: 120, marginLeft: 20, fontWeight: 'bold', fontSize: 50}}>{604 - currentEndPage}</Text>
+                    <Text style={{color: "#FFFFFF", marginTop: 0, marginLeft: 20, fontWeight: 'bold'}}> Pages Left To Finish The Quran</Text>
+                    <Text style={{color: "#FFFFFF", marginTop: 120, marginLeft: 78, marginRight: 75,fontWeight: 'bold'}}> You will need to finish {Math.floor((604 - currentEndPage)/diff)} pages a day to finish the Quran before Ramadan.</Text>
+                    <Text style={{color: "#FFFFFF", marginTop: 120, marginLeft: 20, fontWeight: 'bold', fontSize:15}}> You have read {pagesReadToday} pages today!</Text>
+                </View>
+            </View>
+        ) 
+    } else {
+        return (
+            <View style={styles.container}>
+                <View style={{marginTop: 30, alignItems: 'center', justifyContent: 'center'}}>
+                    <Text style={{color: "#FFFFFF", marginTop: 0, marginLeft: 20, fontWeight: 'bold', fontSize: 50}}>{currentEndPage}</Text>
+                    <Text style={{color: "#FFFFFF", marginTop: 0, marginLeft: 20, fontWeight: 'bold'}}> Total Pages Read</Text>
+                    <Text style={{color: "#FFFFFF", marginTop: 70, marginLeft: 20, fontWeight: 'bold', fontSize: 50}}>{604 - currentEndPage}</Text>
+                    <Text style={{color: "#FFFFFF", marginTop: 0, marginLeft: 20, fontWeight: 'bold'}}> Pages Left To Finish The Quran</Text>
+                    <Text style={{color: "#FFFFFF", marginTop: 70, marginLeft: 20, fontWeight: 'bold'}}> You will need to finish {Math.floor((604 - currentEndPage)/diff)} pages a day to finish the Quran before Ramadan.</Text>
+                    <Text style={{color: "#FFFFFF", marginTop: 70, marginLeft: 20, fontWeight: 'bold', fontSize:15}}> You have read {pagesReadToday} pages today!</Text>
+                </View>
+            </View>
+        ) 
+    }
 }
 
 export default LogScreen;

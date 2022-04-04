@@ -5,6 +5,8 @@ import {createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut} fro
 import { useNavigation } from '@react-navigation/native';
 import QuestionScreen from './QuestionScreen';
 import { Image } from 'react-native';
+import "@expo/match-media";
+import { useMediaQuery } from "react-responsive";
 
 const HomeScreen = () => {
     const [email, setEmail] = useState("");
@@ -48,26 +50,105 @@ const HomeScreen = () => {
         })
         .catch((error) => alert(error.message));
     }
-    return (
-        <View style={styles.container}>
-            <Image source={logo} style={styles.logo}/>
-            <KeyboardAvoidingView behavior='padding' style={styles.container}>
-                <View style={styles.inputContainer}>
-                    <TextInput placeholder='Email' value={email} onChangeText={text => setEmail(text)} style={styles.input}/>
-                    <TextInput placeholder='Password' value={password} onChangeText={text => setPassword(text)} style={styles.input} secureTextEntry />
-                </View>
+    
+    const isTabletOrMobileDevice = useMediaQuery({
+        query: "(max-device-width: 1224px)",
+    });
+    const isDeviceWidth295_359 = useMediaQuery({
+        query: "(min-device-width:400) and (max-device-height:900)",
+    });
+    const isDeviceWidth400_950 = useMediaQuery({
+        query: "(min-device-width:400) and (max-device-height:950)",
+    });
+    const isDeviceWidth360_374 = useMediaQuery({
+        query: "(min-device-width:375) and (max-device-width:767)",
+    });
 
-                <View style={styles.buttonContainer}>
-                    <TouchableOpacity onPress={handleLogin} style={styles.button}>
-                        <Text style={styles.buttonText} >Login</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={handleSignUp} style={[styles.button, styles.buttonOutline]}>
-                        <Text style={styles.buttonOutlineText} >Register</Text>
-                    </TouchableOpacity> 
-                </View>
-            </KeyboardAvoidingView>
-        </View>
-    )
+    if(isDeviceWidth295_359) {
+        return (
+            <View style={styles.container}>
+                <Image source={logo} style={styles.logoMax}/>
+                <KeyboardAvoidingView behavior='padding' style={styles.container}>
+                    <View style={styles.inputContainer}>
+                        <TextInput placeholder='Email' value={email} onChangeText={text => setEmail(text)} style={styles.input}/>
+                        <TextInput placeholder='Password' value={password} onChangeText={text => setPassword(text)} style={styles.input} secureTextEntry />
+                    </View>
+    
+                    <View style={styles.buttonContainerMax}>
+                        <TouchableOpacity onPress={handleLogin} style={styles.button}>
+                            <Text style={styles.buttonText} >Login</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={handleSignUp} style={[styles.button, styles.buttonOutline]}>
+                            <Text style={styles.buttonOutlineText} >Register</Text>
+                        </TouchableOpacity> 
+                    </View>
+                </KeyboardAvoidingView>
+            </View>
+        )
+    } else if(isDeviceWidth360_374) {
+        return (
+            <View style={styles.container}>
+                <Image source={logo} style={styles.logoMaxPro2}/>
+                <KeyboardAvoidingView behavior='padding' style={styles.container}>
+                    <View style={styles.inputContainer}>
+                        <TextInput placeholder='Email' value={email} onChangeText={text => setEmail(text)} style={styles.input}/>
+                        <TextInput placeholder='Password' value={password} onChangeText={text => setPassword(text)} style={styles.input} secureTextEntry />
+                    </View>
+    
+                    <View style={styles.buttonContainerMax}>
+                        <TouchableOpacity onPress={handleLogin} style={styles.button}>
+                            <Text style={styles.buttonText} >Login</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={handleSignUp} style={[styles.button, styles.buttonOutline]}>
+                            <Text style={styles.buttonOutlineText} >Register</Text>
+                        </TouchableOpacity> 
+                    </View>
+                </KeyboardAvoidingView>
+            </View>
+        )
+    } else if(isDeviceWidth400_950) {
+        return (
+            <View style={styles.container}>
+                <Image source={logo} style={styles.logoMaxPro}/>
+                <KeyboardAvoidingView behavior='padding' style={styles.container}>
+                    <View style={styles.inputContainer}>
+                        <TextInput placeholder='Email' value={email} onChangeText={text => setEmail(text)} style={styles.input}/>
+                        <TextInput placeholder='Password' value={password} onChangeText={text => setPassword(text)} style={styles.input} secureTextEntry />
+                    </View>
+    
+                    <View style={styles.buttonContainerMax}>
+                        <TouchableOpacity onPress={handleLogin} style={styles.button}>
+                            <Text style={styles.buttonText} >Login</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={handleSignUp} style={[styles.button, styles.buttonOutline]}>
+                            <Text style={styles.buttonOutlineText} >Register</Text>
+                        </TouchableOpacity> 
+                    </View>
+                </KeyboardAvoidingView>
+            </View>
+        )
+    } else {
+        return (
+            <View style={styles.container}>
+                <Image source={logo} style={styles.logo}/>
+                <KeyboardAvoidingView behavior='padding' style={styles.container}>
+                    <View style={styles.inputContainer}>
+                        <TextInput placeholder='Email' value={email} onChangeText={text => setEmail(text)} style={styles.input}/>
+                        <TextInput placeholder='Password' value={password} onChangeText={text => setPassword(text)} style={styles.input} secureTextEntry />
+                    </View>
+
+                    <View style={styles.buttonContainerMax}>
+                        <TouchableOpacity onPress={handleLogin} style={styles.button}>
+                            <Text style={styles.buttonText} >Login</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={handleSignUp} style={[styles.button, styles.buttonOutline]}>
+                            <Text style={styles.buttonOutlineText} >Register</Text>
+                        </TouchableOpacity> 
+                    </View>
+                </KeyboardAvoidingView>
+            </View>
+        )
+    }
 }
 
 export default HomeScreen; 
@@ -86,6 +167,21 @@ const styles = StyleSheet.create({
         height: 200,
         marginTop: 50
     },
+    logoMax: {
+        width: 200,
+        height: 200,
+        marginTop: 100
+    },
+    logoMaxPro: {
+        width: 200,
+        height: 200,
+        marginTop: 110
+    },
+    logoMaxPro2: {
+        width: 200,
+        height: 200,
+        marginTop: 100
+    },
     input: {
         backgroundColor: 'white',
         paddingHorizontal: 70,
@@ -102,6 +198,12 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         marginTop: 100
+    },
+    buttonContainerMax: {
+        width: '80%',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 150
     },
     button: {
         backgroundColor: '#0782F9',

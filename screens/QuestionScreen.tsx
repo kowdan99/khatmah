@@ -7,6 +7,8 @@ import pages from '../data3'
 import LogScreen from './LogScreen';
 import { useIsFocused } from "@react-navigation/native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import "@expo/match-media";
+import { useMediaQuery } from "react-responsive";
 
 const QuestionScreen = () => {
     //First picker data
@@ -132,33 +134,129 @@ const QuestionScreen = () => {
         }
         navigation.navigate('Log', {currentSurah: surah, currentPage: page, currentStartPage: startPage});
     }
+
+    const isDeviceWidth295_359 = useMediaQuery({
+        query: "(min-device-width:400) and (max-device-height:900)",
+    });
+
+    const isDeviceWidth400_950 = useMediaQuery({
+        query: "(min-device-width:400) and (max-device-height:950)",
+    });
     
-    return (
-        <View style={styles.container}>
-            <View style={{marginTop: 30}}>
-                <Text style={{color: "#FFFFFF", marginTop: 0, marginLeft: 20, fontWeight: 'bold'}}>What surah did you stop at?</Text>
-                <DropDownPicker onSelectItem={(item) => {setSurah(item)}}placeholder="Pick a surah" open={open} setOpen={setOpen} value={value} setValue={setValue} items={item} setItems={setItems} multiple={false}/>
-                {lastSurah == "" && lastPage == "" ? null : <Text style={{color: "#FFFFFF", marginLeft: 20, fontWeight: 'normal', fontStyle:'italic'}}> You stopped last at surah: {lastSurah}, on page {lastPage}</Text>}
+    //11 pro
+    const isDeviceWidth360_374 = useMediaQuery({
+        query: "(min-device-width:375) and (max-device-width:767)",
+    });
+
+    if(isDeviceWidth295_359) {
+        return (
+            <View style={styles.container}>
+                <View style={{marginTop: 30}}>
+                    <Text style={{color: "#FFFFFF", marginTop: 0, marginLeft: 20, fontWeight: 'bold'}}>What surah did you stop at?</Text>
+                    <DropDownPicker onSelectItem={(item) => {setSurah(item)}}placeholder="Pick a surah" open={open} setOpen={setOpen} value={value} setValue={setValue} items={item} setItems={setItems} multiple={false}/>
+                    {lastSurah == "" && lastPage == "" ? null : <Text style={{color: "#FFFFFF", marginLeft: 20, fontWeight: 'normal', fontStyle:'italic'}}> You stopped last at surah: {lastSurah}, on page {lastPage}</Text>}
+                </View>
+                {/* <View style={{marginTop: 80}}>
+                    <Text style={{color: "#FFFFFF", marginLeft: 20, fontWeight: 'bold'}}>
+                        How many pages would you like to read?
+                    </Text>
+                    <DropDownPicker onSelectItem={(item) => {setPages(item)}}placeholder="Pick a number of pages to complete" open={open2} setOpen={setOpen2} value={value2} setValue={setValue2} items={item2} setItems={setItems2} multiple={false}/>
+                </View> */}
+                <View style={{marginTop: 180}}>
+                    <Text style={{color: "#FFFFFF", marginLeft: 20, fontWeight: 'bold'}}>
+                        What page did you stop at?
+                    </Text>
+                    <DropDownPicker onSelectItem={(item) => {setStartPage(item)}} placeholder="Pick a page number" open={open3} setOpen={setOpen3} value={value3} setValue={setValue3} items={item3} setItems={setItems3} multiple={false}/>
+                </View>
+                <View style={styles.buttonContainerMax}>
+                    <TouchableOpacity onPress={navigate} style={styles.button}>
+                        <Text style={styles.buttonText}>Start counting ✨</Text>
+                    </TouchableOpacity>  
+                </View>
             </View>
-            {/* <View style={{marginTop: 80}}>
-                <Text style={{color: "#FFFFFF", marginLeft: 20, fontWeight: 'bold'}}>
-                    How many pages would you like to read?
-                </Text>
-                <DropDownPicker onSelectItem={(item) => {setPages(item)}}placeholder="Pick a number of pages to complete" open={open2} setOpen={setOpen2} value={value2} setValue={setValue2} items={item2} setItems={setItems2} multiple={false}/>
-            </View> */}
-            <View style={{marginTop: 180}}>
-                <Text style={{color: "#FFFFFF", marginLeft: 20, fontWeight: 'bold'}}>
-                    What page did you stop at?
-                </Text>
-                <DropDownPicker onSelectItem={(item) => {setStartPage(item)}} placeholder="Pick a page number" open={open3} setOpen={setOpen3} value={value3} setValue={setValue3} items={item3} setItems={setItems3} multiple={false}/>
+        )
+    } else if(isDeviceWidth360_374) {
+        return (
+            <View style={styles.container}>
+                <View style={{marginTop: 30}}>
+                    <Text style={{color: "#FFFFFF", marginTop: 0, marginLeft: 20, fontWeight: 'bold'}}>What surah did you stop at?</Text>
+                    <DropDownPicker onSelectItem={(item) => {setSurah(item)}}placeholder="Pick a surah" open={open} setOpen={setOpen} value={value} setValue={setValue} items={item} setItems={setItems} multiple={false}/>
+                    {lastSurah == "" && lastPage == "" ? null : <Text style={{color: "#FFFFFF", marginLeft: 20, fontWeight: 'normal', fontStyle:'italic'}}> You stopped last at surah: {lastSurah}, on page {lastPage}</Text>}
+                </View>
+                {/* <View style={{marginTop: 80}}>
+                    <Text style={{color: "#FFFFFF", marginLeft: 20, fontWeight: 'bold'}}>
+                        How many pages would you like to read?
+                    </Text>
+                    <DropDownPicker onSelectItem={(item) => {setPages(item)}}placeholder="Pick a number of pages to complete" open={open2} setOpen={setOpen2} value={value2} setValue={setValue2} items={item2} setItems={setItems2} multiple={false}/>
+                </View> */}
+                <View style={{marginTop: 200}}>
+                    <Text style={{color: "#FFFFFF", marginLeft: 20, fontWeight: 'bold'}}>
+                        What page did you stop at?
+                    </Text>
+                    <DropDownPicker onSelectItem={(item) => {setStartPage(item)}} placeholder="Pick a page number" open={open3} setOpen={setOpen3} value={value3} setValue={setValue3} items={item3} setItems={setItems3} multiple={false}/>
+                </View>
+                <View style={styles.buttonContainerMax}>
+                    <TouchableOpacity onPress={navigate} style={styles.button}>
+                        <Text style={styles.buttonText}>Start counting ✨</Text>
+                    </TouchableOpacity>  
+                </View>
             </View>
-            <View style={styles.buttonContainer}>
-                <TouchableOpacity onPress={navigate} style={styles.button}>
-                    <Text style={styles.buttonText}>Start counting ✨</Text>
-                </TouchableOpacity>  
+        )
+    } else if(isDeviceWidth400_950) {
+        return (
+            <View style={styles.container}>
+                <View style={{marginTop: 30}}>
+                    <Text style={{color: "#FFFFFF", marginTop: 0, marginLeft: 20, fontWeight: 'bold'}}>What surah did you stop at?</Text>
+                    <DropDownPicker onSelectItem={(item) => {setSurah(item)}}placeholder="Pick a surah" open={open} setOpen={setOpen} value={value} setValue={setValue} items={item} setItems={setItems} multiple={false}/>
+                    {lastSurah == "" && lastPage == "" ? null : <Text style={{color: "#FFFFFF", marginLeft: 20, fontWeight: 'normal', fontStyle:'italic'}}> You stopped last at surah: {lastSurah}, on page {lastPage}</Text>}
+                </View>
+                {/* <View style={{marginTop: 80}}>
+                    <Text style={{color: "#FFFFFF", marginLeft: 20, fontWeight: 'bold'}}>
+                        How many pages would you like to read?
+                    </Text>
+                    <DropDownPicker onSelectItem={(item) => {setPages(item)}}placeholder="Pick a number of pages to complete" open={open2} setOpen={setOpen2} value={value2} setValue={setValue2} items={item2} setItems={setItems2} multiple={false}/>
+                </View> */}
+                <View style={{marginTop: 210}}>
+                    <Text style={{color: "#FFFFFF", marginLeft: 20, fontWeight: 'bold'}}>
+                        What page did you stop at?
+                    </Text>
+                    <DropDownPicker onSelectItem={(item) => {setStartPage(item)}} placeholder="Pick a page number" open={open3} setOpen={setOpen3} value={value3} setValue={setValue3} items={item3} setItems={setItems3} multiple={false}/>
+                </View>
+                <View style={styles.buttonContainerMax}>
+                    <TouchableOpacity onPress={navigate} style={styles.button}>
+                        <Text style={styles.buttonText}>Start counting ✨</Text>
+                    </TouchableOpacity>  
+                </View>
             </View>
-        </View>
-    )
+        )
+    } else {
+        return (
+            <View style={styles.container}>
+                <View style={{marginTop: 30}}>
+                    <Text style={{color: "#FFFFFF", marginTop: 0, marginLeft: 20, fontWeight: 'bold'}}>What surah did you stop at?</Text>
+                    <DropDownPicker onSelectItem={(item) => {setSurah(item)}}placeholder="Pick a surah" open={open} setOpen={setOpen} value={value} setValue={setValue} items={item} setItems={setItems} multiple={false}/>
+                    {lastSurah == "" && lastPage == "" ? null : <Text style={{color: "#FFFFFF", marginLeft: 20, fontWeight: 'normal', fontStyle:'italic'}}> You stopped last at surah: {lastSurah}, on page {lastPage}</Text>}
+                </View>
+                {/* <View style={{marginTop: 80}}>
+                    <Text style={{color: "#FFFFFF", marginLeft: 20, fontWeight: 'bold'}}>
+                        How many pages would you like to read?
+                    </Text>
+                    <DropDownPicker onSelectItem={(item) => {setPages(item)}}placeholder="Pick a number of pages to complete" open={open2} setOpen={setOpen2} value={value2} setValue={setValue2} items={item2} setItems={setItems2} multiple={false}/>
+                </View> */}
+                <View style={{marginTop: 180}}>
+                    <Text style={{color: "#FFFFFF", marginLeft: 20, fontWeight: 'bold'}}>
+                        What page did you stop at?
+                    </Text>
+                    <DropDownPicker onSelectItem={(item) => {setStartPage(item)}} placeholder="Pick a page number" open={open3} setOpen={setOpen3} value={value3} setValue={setValue3} items={item3} setItems={setItems3} multiple={false}/>
+                </View>
+                <View style={styles.buttonContainerMax}>
+                    <TouchableOpacity onPress={navigate} style={styles.buttonMax}>
+                        <Text style={styles.buttonTextMax}>Start counting ✨</Text>
+                    </TouchableOpacity>  
+                </View>
+            </View>
+        )
+    }
     
 }
 export default QuestionScreen
@@ -184,6 +282,13 @@ const styles = StyleSheet.create({
         marginTop: 180,
         marginLeft: 30
     },
+    buttonContainerMax: {
+        width: '80%',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 280,
+        marginLeft: 40
+    },
     button: {
         backgroundColor: '#FFFFFF',
         width: '100%',
@@ -192,11 +297,35 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         // alignItems: 'center',
     },
+    buttonMax: {
+        backgroundColor: '#FFFFFF',
+        width: '100%',
+        padding: 15,
+        paddingHorizontal: 20,
+        borderRadius: 10,
+        // alignItems: 'center',
+    },
+    buttonMaxPro: {
+        backgroundColor: '#FFFFFF',
+        width: '100%',
+        padding: 15,
+        paddingHorizontal: 65,
+        borderRadius: 10,
+        // alignItems: 'center',
+    },
     buttonText: {
         color: "#6667AB",
         fontWeight: '700',
         fontSize: 16,
         marginLeft: 50
+    },
+    buttonTextMax: {
+        color: "#6667AB",
+        fontWeight: '700',
+        fontSize: 16,
+        marginLeft: 80,
+        alignItems: 'center',
+        justifyContent:'center'
     }
 })
 
