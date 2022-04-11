@@ -50,6 +50,10 @@ const HomeScreen = () => {
         })
         .catch((error) => alert(error.message));
     }
+
+    const navigate = () => {
+        navigation.navigate('Questions');
+    }
     
     const isTabletOrMobileDevice = useMediaQuery({
         query: "(max-device-width: 1224px)",
@@ -69,18 +73,10 @@ const HomeScreen = () => {
             <View style={styles.container}>
                 <Image source={logo} style={styles.logoMax}/>
                 <KeyboardAvoidingView behavior='padding' style={styles.container}>
-                    <View style={styles.inputContainer}>
-                        <TextInput placeholder='Email' value={email} onChangeText={text => setEmail(text)} style={styles.input}/>
-                        <TextInput placeholder='Password' value={password} onChangeText={text => setPassword(text)} style={styles.input} secureTextEntry />
-                    </View>
-    
                     <View style={styles.buttonContainerMax}>
-                        <TouchableOpacity onPress={handleLogin} style={styles.button}>
-                            <Text style={styles.buttonText} >Login</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={handleSignUp} style={[styles.button, styles.buttonOutline]}>
-                            <Text style={styles.buttonOutlineText} >Register</Text>
-                        </TouchableOpacity> 
+                        <TouchableOpacity onPress={navigate} style={styles.button}>
+                            <Text style={styles.buttonText}>Start here</Text>
+                        </TouchableOpacity>  
                     </View>
                 </KeyboardAvoidingView>
             </View>
@@ -90,18 +86,10 @@ const HomeScreen = () => {
             <View style={styles.container}>
                 <Image source={logo} style={styles.logoMaxPro2}/>
                 <KeyboardAvoidingView behavior='padding' style={styles.container}>
-                    <View style={styles.inputContainer}>
-                        <TextInput placeholder='Email' value={email} onChangeText={text => setEmail(text)} style={styles.input}/>
-                        <TextInput placeholder='Password' value={password} onChangeText={text => setPassword(text)} style={styles.input} secureTextEntry />
-                    </View>
-    
                     <View style={styles.buttonContainerMax}>
-                        <TouchableOpacity onPress={handleLogin} style={styles.button}>
-                            <Text style={styles.buttonText} >Login</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={handleSignUp} style={[styles.button, styles.buttonOutline]}>
-                            <Text style={styles.buttonOutlineText} >Register</Text>
-                        </TouchableOpacity> 
+                    <TouchableOpacity onPress={navigate} style={styles.button}>
+                        <Text style={styles.buttonText}>Start here</Text>
+                    </TouchableOpacity>  
                     </View>
                 </KeyboardAvoidingView>
             </View>
@@ -111,18 +99,10 @@ const HomeScreen = () => {
             <View style={styles.container}>
                 <Image source={logo} style={styles.logoMaxPro}/>
                 <KeyboardAvoidingView behavior='padding' style={styles.container}>
-                    <View style={styles.inputContainer}>
-                        <TextInput placeholder='Email' value={email} onChangeText={text => setEmail(text)} style={styles.input}/>
-                        <TextInput placeholder='Password' value={password} onChangeText={text => setPassword(text)} style={styles.input} secureTextEntry />
-                    </View>
-    
                     <View style={styles.buttonContainerMax}>
-                        <TouchableOpacity onPress={handleLogin} style={styles.button}>
-                            <Text style={styles.buttonText} >Login</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={handleSignUp} style={[styles.button, styles.buttonOutline]}>
-                            <Text style={styles.buttonOutlineText} >Register</Text>
-                        </TouchableOpacity> 
+                        <TouchableOpacity onPress={navigate} style={styles.button}>
+                            <Text style={styles.buttonText}>Start here</Text>
+                        </TouchableOpacity>  
                     </View>
                 </KeyboardAvoidingView>
             </View>
@@ -132,18 +112,10 @@ const HomeScreen = () => {
             <View style={styles.container}>
                 <Image source={logo} style={styles.logo}/>
                 <KeyboardAvoidingView behavior='padding' style={styles.container}>
-                    <View style={styles.inputContainer}>
-                        <TextInput placeholder='Email' value={email} onChangeText={text => setEmail(text)} style={styles.input}/>
-                        <TextInput placeholder='Password' value={password} onChangeText={text => setPassword(text)} style={styles.input} secureTextEntry />
-                    </View>
-
                     <View style={styles.buttonContainerMax}>
-                        <TouchableOpacity onPress={handleLogin} style={styles.button}>
-                            <Text style={styles.buttonText} >Login</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={handleSignUp} style={[styles.button, styles.buttonOutline]}>
-                            <Text style={styles.buttonOutlineText} >Register</Text>
-                        </TouchableOpacity> 
+                        <TouchableOpacity onPress={navigate} style={styles.button}>
+                            <Text style={styles.buttonText}>Start here</Text>
+                        </TouchableOpacity>  
                     </View>
                 </KeyboardAvoidingView>
             </View>
@@ -206,7 +178,7 @@ const styles = StyleSheet.create({
         marginTop: 150
     },
     button: {
-        backgroundColor: '#0782F9',
+        backgroundColor: '#FFFFFF',
         width: '100%',
         padding: 15,
         paddingHorizontal: 40,
@@ -225,8 +197,8 @@ const styles = StyleSheet.create({
         fontSize: 16,
     },
     buttonText: {
-        color: 'white',
+        color: "#6667AB",
         fontWeight: '700',
-        fontSize: 16,
+        fontSize: 16
     }
   });

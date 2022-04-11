@@ -143,12 +143,38 @@ const QuestionScreen = () => {
         query: "(min-device-width:400) and (max-device-height:950)",
     });
     
-    //11 pro
+    //iphone 8
     const isDeviceWidth360_374 = useMediaQuery({
         query: "(min-device-width:375) and (max-device-width:767)",
     });
 
-    if(isDeviceWidth295_359) {
+    // 11 pro
+    const isDeviceWidth414_896 = useMediaQuery({
+        query: "(device-width:414) and (device-height:896)",
+    });
+
+    if(isDeviceWidth414_896) {
+        return (
+            <View style={styles.container}>
+                <View style={{marginTop: 30}}>
+                    <Text style={{color: "#FFFFFF", marginTop: 0, marginLeft: 20, fontWeight: 'bold'}}>What surah did you stop at?</Text>
+                    <DropDownPicker onSelectItem={(item) => {setSurah(item)}}placeholder="Pick a surah" open={open} setOpen={setOpen} value={value} setValue={setValue} items={item} setItems={setItems} multiple={false}/>
+                    {lastSurah == "" && lastPage == "" ? null : <Text style={{color: "#FFFFFF", marginLeft: 20, fontWeight: 'normal', fontStyle:'italic'}}> You stopped last at surah: {lastSurah}, on page {lastPage}</Text>}
+                </View>
+                <View style={{marginTop: 200}}>
+                    <Text style={{color: "#FFFFFF", marginLeft: 20, fontWeight: 'bold'}}>
+                        What page did you stop at?
+                    </Text>
+                    <DropDownPicker onSelectItem={(item) => {setStartPage(item)}} placeholder="Pick a page number" open={open3} setOpen={setOpen3} value={value3} setValue={setValue3} items={item3} setItems={setItems3} multiple={false}/>
+                </View>
+                <View style={styles.buttonContainer11pro}>
+                    <TouchableOpacity onPress={navigate} style={styles.button}>
+                        <Text style={styles.buttonText}>Start counting ✨</Text>
+                    </TouchableOpacity>  
+                </View>
+            </View>
+        )
+    } else if(isDeviceWidth295_359) {
         return (
             <View style={styles.container}>
                 <View style={{marginTop: 30}}>
@@ -286,7 +312,14 @@ const styles = StyleSheet.create({
         width: '80%',
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 280,
+        marginTop: 150,
+        marginLeft: 40
+    },
+    buttonContainer11pro : {
+        width: '80%',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 300,
         marginLeft: 40
     },
     button: {

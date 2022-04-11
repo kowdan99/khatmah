@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "khatmah",
+    "name": "MyKhatmah",
     "slug": "khatmah",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -17,7 +17,9 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.kowdan99.khatmah",
+      "buildNumber": "2"
     },
     "android": {
       "adaptiveIcon": {

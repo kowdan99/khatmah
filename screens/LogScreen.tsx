@@ -132,10 +132,10 @@ const LogScreen = ({route, navigation} : Props): JSX.Element => {
                 <View style={{marginTop: 30, alignItems: 'center', justifyContent: 'center'}}>
                     <Text style={{color: "#FFFFFF", marginTop: 0, marginLeft: 20, fontWeight: 'bold', fontSize: 50}}>{currentEndPage}</Text>
                     <Text style={{color: "#FFFFFF", marginTop: 0, marginLeft: 20, fontWeight: 'bold'}}> Total Pages Read</Text>
-                    <Text style={{color: "#FFFFFF", marginTop: 120, marginLeft: 20, fontWeight: 'bold', fontSize: 50}}>{604 - currentEndPage}</Text>
+                    <Text style={{color: "#FFFFFF", marginTop: 75, marginLeft: 20, fontWeight: 'bold', fontSize: 50}}>{604 - currentEndPage}</Text>
                     <Text style={{color: "#FFFFFF", marginTop: 0, marginLeft: 20, fontWeight: 'bold'}}> Pages Left To Finish The Quran</Text>
-                    <Text style={{color: "#FFFFFF", marginTop: 120, marginLeft: 78, marginRight: 75,fontWeight: 'bold'}}> You will need to finish {Math.floor((604 - currentEndPage)/diff)} pages a day to finish the Quran before Ramadan.</Text>
-                    <Text style={{color: "#FFFFFF", marginTop: 120, marginLeft: 20, fontWeight: 'bold', fontSize:15}}> You have read {pagesReadToday} pages today!</Text>
+                    <Text style={{color: "#FFFFFF", marginTop: 75, marginLeft: 78, marginRight: 75,fontWeight: 'bold'}}> You will need to finish {Math.floor((604 - currentEndPage)/diff)} pages a day to finish the Quran before Ramadan.</Text>
+                    <Text style={{color: "#FFFFFF", marginTop: 75, marginLeft: 20, fontWeight: 'bold', fontSize:15}}> You have read {pagesReadToday} pages today!</Text>
                 </View>
             </View>
         ) 
